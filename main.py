@@ -18,42 +18,49 @@ def deleteFile(path: str):
     try:
         os.remove(path)
         log('MAIN', f'File deleted: {path}')
+        return True
     except FileNotFoundError:
-        deleteFolder(path)
+        return deleteFolder(path)
     except PermissionError:
         log('MAIN', f'File skipped: {path}')
+        return False
 
 def deleteFolder(path: str):
     try:
         os.rmdir(path)
         print('MAIN', f'Folder deleted: {path}')
+        return True
     except PermissionError:
         print('MAIN', f'Folder skipped: {path}')
+        return False
 
 windowsTemp_path = "C:\\Windows\\Temp"
 appDataTemp_path = "C:\\Users\\mat_d\\AppData\\Local\\Temp"
 prefetch_path = "C:\\Windows\\Prefetch"
 
-# Notifying cleaning start
-log('MAIN', 'Start cleaning!', notify=True)
+# Start delete counter
+delete_count = 0
 
 # Cleaning Windows Temp folder
 log('MAIN', 'Windows Temp folder cleaning started.')
 for file in os.listdir(windowsTemp_path):
-    deleteFile(windowsTemp_path + '\\' + file)
+    if deleteFile(windowsTemp_path + '\\' + file):
+        delete_count += 1
 log('MAIN', 'Windows Temp folder cleaning finished.')
 
 # Cleaning AppData Temp folder
 log('MAIN', 'AppData Temp folder cleaning started.')
 for file in os.listdir(appDataTemp_path):
-    deleteFile(appDataTemp_path + '\\' + file)
+    if deleteFile(appDataTemp_path + '\\' + file):
+        delete_count += 1
 log('MAIN', 'AppData Temp folder cleaning finished.')
 
 # Cleaning Prefetch folder
 log('MAIN', 'Prefetch folder cleaning started.')
 for file in os.listdir(prefetch_path):
-    deleteFile(prefetch_path + '\\' + file)
+    if deleteFile(prefetch_path + '\\' + file):
+        delete_count += 1
 log('MAIN', 'Prefetch folder cleaning finished.')
 
 # Notifying cleaning finish
-log('MAIN', 'All cleaning finished!', notify=True)
+log('MAIN', f'All cleaning finished!\nTemp files deleted: {delete_count}', notify=True)
