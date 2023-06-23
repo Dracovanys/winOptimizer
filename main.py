@@ -35,7 +35,7 @@ def deleteFolder(path: str):
         return False
 
 windowsTemp_path = "C:\\Windows\\Temp"
-appDataTemp_path = "C:\\Users\\mat_d\\AppData\\Local\\Temp"
+appDataTemp_path = f"C:\\Users\\{os.getlogin()}\\AppData\\Local\\Temp"
 prefetch_path = "C:\\Windows\\Prefetch"
 
 # Start delete counter
