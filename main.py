@@ -12,7 +12,7 @@ def log(target: str, message: str, notify: bool = False):
     log = f'[{datetime.today().day}/{datetime.today().month}/{datetime.today().year} {datetime.today().hour}:{datetime.today().minute}:{datetime.today().second}][{target}] {message}'
     print(log)
     with open(f'{os.path.dirname(os.path.realpath(__file__))}\\log.txt', 'a') as file:
-        file.write(log + '\n')
+        file.write(log.replace("\n", " ") + '\n')
 
 def deleteFile(path: str):
     try:
