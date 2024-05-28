@@ -1,13 +1,13 @@
 import os
 from datetime import datetime
-from windows_toasts import WindowsToaster, ToastText1
+from windows_toasts import WindowsToaster, Toast
 
 wintoaster = WindowsToaster('Windows Optimizer')
-toast = ToastText1()
+toast = Toast()
 
 def log(target: str, message: str, notify: bool = False):
     if notify:
-        toast.SetBody(message)
+        toast.text_fields = [message]
         wintoaster.show_toast(toast)
     log = f'[{datetime.today().day}/{datetime.today().month}/{datetime.today().year} {datetime.today().hour}:{datetime.today().minute}:{datetime.today().second}][{target}] {message}'
     print(log)
@@ -50,17 +50,23 @@ log('MAIN', 'Windows Temp folder cleaning finished.')
 
 # Cleaning AppData Temp folder
 log('MAIN', 'AppData Temp folder cleaning started.')
-for file in os.listdir(appDataTemp_path):
-    if deleteFile(appDataTemp_path + '\\' + file):
-        delete_count += 1
-log('MAIN', 'AppData Temp folder cleaning finished.')
+try:
+    for file in os.listdir(appDataTemp_path):
+        if deleteFile(appDataTemp_path + '\\' + file):
+            delete_count += 1
+    log('MAIN', 'AppData Temp folder cleaning finished.')
+except PermissionError:
+    log('MAIN', 'Impossible to clean AppData Temp folder.')
 
 # Cleaning Prefetch folder
 log('MAIN', 'Prefetch folder cleaning started.')
-for file in os.listdir(prefetch_path):
-    if deleteFile(prefetch_path + '\\' + file):
-        delete_count += 1
-log('MAIN', 'Prefetch folder cleaning finished.')
+try:
+    for file in os.listdir(prefetch_path):
+        if deleteFile(prefetch_path + '\\' + file):
+            delete_count += 1    
+    log('MAIN', 'Prefetch folder cleaning finished.')
+except PermissionError:
+    log('MAIN', 'Impossible to clean Prefetch folder')    
 
 # Notifying cleaning finish
 log('MAIN', f'All cleaning finished!\nTemp files deleted: {delete_count}', notify=True)

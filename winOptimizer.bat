@@ -1,0 +1,1 @@
+D:\Desenvolvimento\winOptimizer\venv\Scripts\python.exe main.py
